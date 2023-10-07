@@ -83,9 +83,36 @@ namespace Application.UseCases.SComentario
             }
         }
 
-        public Task<ComentarioResponse> UpdateComentario(ComentarioRequest request, int idComentario)
+        public async Task<ComentarioResponse> UpdateComentario(ComentarioRequest request, int idComentario)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var comentario = await _query.GetComentarioById(idComentario);
+                if (comentario != null)
+                {
+                    comentario = await _command.UpdateComentario(request, idComentario);
+
+                    return await CreateComentarioResponse(comentario);
+                }
+                else
+                {
+                    throw new ExceptionNotFound("No existe ningun comentario con ese ID");
+                }
+
+                
+            }
+            catch (Conflict ex)
+            {
+                throw new Conflict("Error en la implementación a la base de datos: " + ex.Message);
+            }
+            catch (ExceptionNotFound ex)
+            {
+                throw new ExceptionNotFound("Error en la busqueda en la base de datos: " + ex.Message);
+            }
+            catch (ExceptionSintaxError ex)
+            {
+                throw new ExceptionSintaxError("Error en la sintaxis de la mercadería a modificar: " + ex.Message);
+            }
         }
 
         private Task<ComentarioResponse> CreateComentarioResponse(Comentario uncomentario)
