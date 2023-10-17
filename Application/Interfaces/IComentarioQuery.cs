@@ -1,14 +1,10 @@
 ﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
     public interface IComentarioQuery
     {
-        Task <Comentario> GetComentarioById(int id);
+        Task<Comentario> GetComentarioById(int id);
+        Task<Comentario> GetComentarioByRecetaId(Guid recetaId);
     }
 }

@@ -3,15 +3,10 @@ using Application.Interfaces;
 using Application.Request;
 using Application.Response;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.UseCases.SComentario
 {
-    public class ComentarioService: IComentarioService
+    public class ComentarioService : IComentarioService
     {
         private readonly IComentarioCommand _command;
         private readonly IComentarioQuery _query;
@@ -27,14 +22,15 @@ namespace Application.UseCases.SComentario
             var comentario = new Comentario
             {
                 Contenido = request.Contenido,
-                //PromedioPuntajeId = request.PromedioPuntajeId,
+                PromedioPuntajeId = request.PromedioPuntajeId,
                 PuntajeReceta = request.PuntajeReceta,
-                //RecetaId = request.RecetaId,
+                RecetaId = request.RecetaId,
                 //UsuarioId = request.UsuarioId,
+
             };
             Comentario comentarioCreated = await _command.CreateComentario(comentario);
             return await CreateComentarioResponse(comentarioCreated);
-            
+
         }
 
         public async Task<ComentarioResponse> DeleteComentario(int idComentario)
@@ -53,7 +49,7 @@ namespace Application.UseCases.SComentario
 
                 };
             }
-            
+
             catch (ExceptionNotFound ex) { throw new ExceptionNotFound("Error en la búsqueda de la receta: " + ex.Message); }
             catch (Conflict ex) { throw new Conflict("Error en la base de datos: " + ex.Message); }
             catch (ExceptionSintaxError) { throw new ExceptionSintaxError("Sintaxis incorrecta para el Id"); }
@@ -64,6 +60,30 @@ namespace Application.UseCases.SComentario
             try
             {
                 var comentario = await _query.GetComentarioById(idComentario);
+                if (comentario != null)
+                {
+                    return await CreateComentarioResponse(comentario);
+                }
+                else
+                {
+                    throw new ExceptionNotFound("No existe ningun comentario con ese ID");
+                }
+            }
+            catch (ExceptionSintaxError)
+            {
+                throw new ExceptionSintaxError("Error en la sintaxis del id a buscar, pruebe ingresar el id con el formato válido");
+            }
+            catch (ExceptionNotFound e)
+            {
+                throw new ExceptionNotFound("Error en la búsqueda: " + e.Message);
+            }
+        }
+
+        public async Task<ComentarioResponse> GetComentarioByRecetaId(Guid RecetaId)
+        {
+            try
+            {
+                var comentario = await _query.GetComentarioByRecetaId(RecetaId);
                 if (comentario != null)
                 {
                     return await CreateComentarioResponse(comentario);
@@ -99,7 +119,7 @@ namespace Application.UseCases.SComentario
                     throw new ExceptionNotFound("No existe ningun comentario con ese ID");
                 }
 
-                
+
             }
             catch (Conflict ex)
             {
@@ -124,6 +144,7 @@ namespace Application.UseCases.SComentario
                 PromedioPuntajeId = uncomentario.PromedioPuntajeId,
                 PuntajeReceta = uncomentario.PuntajeReceta,
                 UsuarioId = uncomentario.UsuarioId,
+                RecetaId = uncomentario.RecetaId,
             };
             return Task.FromResult(comentario);
         }

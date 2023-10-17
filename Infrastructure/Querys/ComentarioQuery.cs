@@ -1,18 +1,12 @@
 ﻿using Application.Exceptions;
 using Application.Interfaces;
-using Application.Request;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Querys
 {
-    public class ComentarioQuery: IComentarioQuery
+    public class ComentarioQuery : IComentarioQuery
     {
         private readonly MicroservicioComentarioContext _context;
         public ComentarioQuery(MicroservicioComentarioContext context)
@@ -31,6 +25,19 @@ namespace Infrastructure.Querys
             {
                 throw new BadRequestt("Hubo un problema al buscar el comentario");
             }
+        }
+        public async Task<Comentario> GetComentarioByRecetaId(Guid recetaId)
+        {
+            try
+            {
+                var comentario = await _context.Comentarios.Where(co => co.RecetaId == recetaId).SingleOrDefaultAsync();
+                return comentario;
+            }
+            catch (DbUpdateException)
+            {
+                throw new BadRequestt("Hubo un problema al buscar el comentario");
+            }
+
         }
     }
 }

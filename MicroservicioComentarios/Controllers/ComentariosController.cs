@@ -24,8 +24,19 @@ namespace MicroservicioComentarios.Controllers
         {
             try
             {
-                var result = await _comentarioService.CreateComentario(request);
-                return new JsonResult(result) { StatusCode = 201 };
+                HttpClient client = new HttpClient();
+                string url = string.Format("https://localhost:7015/api/Receta/", request.RecetaId);
+                HttpResponseMessage response = client.GetAsync(url).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await _comentarioService.CreateComentario(request);
+                    return new JsonResult(result) { StatusCode = 201 };
+                }
+                else
+                {
+                    //Esto lo puse para que corra el codigo no se si deberia ir aca
+                    return new JsonResult(new BadRequest { Message = "Hubo un error" }) { StatusCode = 400 };
+                }
             }
             catch (ExceptionSintaxError ex)
             {
@@ -36,6 +47,7 @@ namespace MicroservicioComentarios.Controllers
                 return new JsonResult(new BadRequest { Message = ex.Message }) { StatusCode = 409 };
             }
         }
+
         [HttpPut("{Id}")]
         [ProducesResponseType(typeof(ComentarioResponse), 200)]
         [ProducesResponseType(typeof(BadRequest), 400)]
@@ -88,18 +100,50 @@ namespace MicroservicioComentarios.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         [ProducesResponseType(typeof(ComentarioResponse), 200)]
         [ProducesResponseType(typeof(BadRequest), 400)]
         [ProducesResponseType(typeof(BadRequest), 404)]
-        public async Task<IActionResult> GetComentarioByid(int comentarioId)
+        public async Task<IActionResult> GetComentarioByid(int Id)
         {
             try
             {
-                var result = await _comentarioService.GetComentarioById(comentarioId);
+                var result = await _comentarioService.GetComentarioById(Id);
                 return new JsonResult(result) { StatusCode = 200 };
             }
-             catch (ExceptionSintaxError ex)
+            catch (ExceptionSintaxError ex)
+            {
+                return new JsonResult(new BadRequest { Message = ex.Message }) { StatusCode = 400 };
+            }
+            catch (ExceptionNotFound ex)
+            {
+                return new JsonResult(new BadRequest { Message = ex.Message }) { StatusCode = 404 };
+            }
+        }
+
+        [HttpGet("RecetaId/{Id}")]
+        [ProducesResponseType(typeof(ComentarioResponse), 200)]
+        [ProducesResponseType(typeof(BadRequest), 400)]
+        [ProducesResponseType(typeof(BadRequest), 404)]
+        public async Task<IActionResult> GetComentarioByRecetaId(Guid Id)
+        {
+            try
+            {
+                HttpClient client = new HttpClient();
+                string url = string.Format("https://localhost:7015/api/Receta/", Id);
+                HttpResponseMessage response = client.GetAsync(url).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await _comentarioService.GetComentarioByRecetaId(Id);
+                    return new JsonResult(result) { StatusCode = 201 };
+                }
+                else
+                {
+                    //Esto lo puse para que corra el codigo no se si deberia ir aca
+                    return new JsonResult(new BadRequest { Message = "" }) { StatusCode = 400 };
+                }
+            }
+            catch (ExceptionSintaxError ex)
             {
                 return new JsonResult(new BadRequest { Message = ex.Message }) { StatusCode = 400 };
             }

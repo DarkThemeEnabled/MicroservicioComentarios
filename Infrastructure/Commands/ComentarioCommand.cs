@@ -4,15 +4,10 @@ using Application.Request;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Commands
 {
-    public class ComentarioCommand: IComentarioCommand
+    public class ComentarioCommand : IComentarioCommand
     {
         private readonly MicroservicioComentarioContext _context;
         public ComentarioCommand(MicroservicioComentarioContext context)
@@ -28,7 +23,7 @@ namespace Infrastructure.Commands
                 await _context.SaveChangesAsync();
                 return comentario;
             }
-            catch(DbUpdateException) 
+            catch (DbUpdateException)
             {
                 throw new Conflict("Error en la base de datos");
             }
@@ -58,10 +53,12 @@ namespace Infrastructure.Commands
                 comentarioToUpdate.RecetaId = comentarioRequest.RecetaId;
                 comentarioToUpdate.Contenido = comentarioRequest.Contenido;
                 comentarioToUpdate.PuntajeReceta = comentarioRequest.PuntajeReceta;
+                comentarioToUpdate.Modificado = true;
+
                 await _context.SaveChangesAsync();
                 return comentarioToUpdate;
             }
-            catch (DbUpdateException) 
+            catch (DbUpdateException)
             {
                 throw new Conflict("Error en la base de datos");
             }

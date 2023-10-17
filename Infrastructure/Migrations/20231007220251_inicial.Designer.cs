@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MicroservicioComentarioContext))]
-    [Migration("20231007002319_inicial")]
+    [Migration("20231007220251_inicial")]
     partial class inicial
     {
         /// <inheritdoc />
@@ -37,6 +37,11 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("Modificado")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("PromedioPuntajeId")
                         .HasColumnType("int");

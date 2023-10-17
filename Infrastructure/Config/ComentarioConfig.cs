@@ -1,11 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Config
 {
@@ -20,6 +15,8 @@ namespace Infrastructure.Config
             builder.Property(co => co.Contenido)
                     .HasMaxLength(500)
                     .IsRequired();
+            builder.Property(co => co.Modificado)
+                .HasDefaultValue(false);
         }
     }
 }
