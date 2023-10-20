@@ -5,6 +5,6 @@ namespace Application.Interfaces
     public interface IComentarioQuery
     {
         Task<Comentario> GetComentarioById(int id);
-        Task<Comentario> GetComentarioByRecetaId(Guid recetaId);
+        Task<List<Comentario>> GetComentarioByRecetaId(Guid recetaId);
     }
 }

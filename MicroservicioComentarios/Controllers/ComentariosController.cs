@@ -53,11 +53,11 @@ namespace MicroservicioComentarios.Controllers
         [ProducesResponseType(typeof(BadRequest), 400)]
         [ProducesResponseType(typeof(BadRequest), 404)]
         [ProducesResponseType(typeof(BadRequest), 409)]
-        public async Task<IActionResult> UpdateComentario(int comentarioId, ComentarioRequest request)
+        public async Task<IActionResult> UpdateComentario(int Id, ComentarioRequest request)
         {
             try
             {
-                var result = await _comentarioService.UpdateComentario(request, comentarioId);
+                var result = await _comentarioService.UpdateComentario(request, Id);
                 return new JsonResult(result) { StatusCode = 200 };
             }
             catch (ExceptionSintaxError ex)
@@ -79,11 +79,11 @@ namespace MicroservicioComentarios.Controllers
         [ProducesResponseType(typeof(BadRequest), 400)]
         [ProducesResponseType(typeof(BadRequest), 404)]
         [ProducesResponseType(typeof(BadRequest), 409)]
-        public async Task<IActionResult> DeleteComentario(int comentarioId)
+        public async Task<IActionResult> DeleteComentario(int Id)
         {
             try
             {
-                var result = await _comentarioService.DeleteComentario(comentarioId);
+                var result = await _comentarioService.DeleteComentario(Id);
                 return new JsonResult(result) { StatusCode = 200 };
             }
             catch (ExceptionSintaxError ex)

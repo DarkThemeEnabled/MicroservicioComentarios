@@ -26,11 +26,11 @@ namespace Infrastructure.Querys
                 throw new BadRequestt("Hubo un problema al buscar el comentario");
             }
         }
-        public async Task<Comentario> GetComentarioByRecetaId(Guid recetaId)
+        public async Task<List<Comentario>> GetComentarioByRecetaId(Guid recetaId)
         {
             try
             {
-                var comentario = await _context.Comentarios.Where(co => co.RecetaId == recetaId).SingleOrDefaultAsync();
+                var comentario = await _context.Comentarios.Where(co => co.RecetaId == recetaId).ToListAsync();
                 return comentario;
             }
             catch (DbUpdateException)

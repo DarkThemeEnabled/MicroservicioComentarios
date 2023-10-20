@@ -9,6 +9,6 @@ namespace Application.Interfaces
         Task<ComentarioResponse> UpdateComentario(ComentarioRequest request, int idComentario);
         Task<ComentarioResponse> DeleteComentario(int idComentario);
         Task<ComentarioResponse> GetComentarioById(int idComentario);
-        Task<ComentarioResponse> GetComentarioByRecetaId(Guid RecetaId);
+        Task<List<ComentarioResponse>> GetComentarioByRecetaId(Guid RecetaId);
     }
 }

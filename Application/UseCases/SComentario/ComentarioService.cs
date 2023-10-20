@@ -41,7 +41,7 @@ namespace Application.UseCases.SComentario
                 Comentario comentarioToDelete = await _command.DeleteComentario(await _query.GetComentarioById(idComentario));
                 return new ComentarioResponse
                 {
-                    ComentarioId = comentarioToDelete.ComentarioId,
+                    
                     Contenido = comentarioToDelete.Contenido,
                     PromedioPuntajeId = comentarioToDelete.PromedioPuntajeId,
                     PuntajeReceta = comentarioToDelete.PuntajeReceta,
@@ -79,14 +79,19 @@ namespace Application.UseCases.SComentario
             }
         }
 
-        public async Task<ComentarioResponse> GetComentarioByRecetaId(Guid RecetaId)
+        public async Task<List<ComentarioResponse>> GetComentarioByRecetaId(Guid RecetaId)
         {
             try
             {
                 var comentario = await _query.GetComentarioByRecetaId(RecetaId);
                 if (comentario != null)
                 {
-                    return await CreateComentarioResponse(comentario);
+                    var comentarioResponse = new List <ComentarioResponse>();
+                    foreach (var item in comentario)
+                    {
+                        comentarioResponse.Add(await CreateComentarioResponse(item));
+                    }
+                    return comentarioResponse;
                 }
                 else
                 {
@@ -139,7 +144,7 @@ namespace Application.UseCases.SComentario
         {
             var comentario = new ComentarioResponse
             {
-                ComentarioId = uncomentario.ComentarioId,
+                
                 Contenido = uncomentario.Contenido,
                 PromedioPuntajeId = uncomentario.PromedioPuntajeId,
                 PuntajeReceta = uncomentario.PuntajeReceta,

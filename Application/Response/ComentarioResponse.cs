@@ -2,7 +2,7 @@
 {
     public class ComentarioResponse
     {
-        public int ComentarioId { get; set; }
+        
         public int UsuarioId { get; set; }
         public int PromedioPuntajeId { get; set; }
         public Guid RecetaId { get; set; }
