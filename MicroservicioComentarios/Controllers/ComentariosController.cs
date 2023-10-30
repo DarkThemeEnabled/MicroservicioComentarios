@@ -53,7 +53,7 @@ namespace MicroservicioComentarios.Controllers
         [ProducesResponseType(typeof(BadRequest), 400)]
         [ProducesResponseType(typeof(BadRequest), 404)]
         [ProducesResponseType(typeof(BadRequest), 409)]
-        public async Task<IActionResult> UpdateComentario(int Id, ComentarioRequest request)
+        public async Task<IActionResult> UpdateComentario(int Id, UpdateComentarioRequest request)
         {
             try
             {

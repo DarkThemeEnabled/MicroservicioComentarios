@@ -3,7 +3,7 @@
     public class ComentarioResponse
     {
         
-        public int UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
         public int PromedioPuntajeId { get; set; }
         public Guid RecetaId { get; set; }
         public string Contenido { get; set; }

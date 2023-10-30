@@ -25,7 +25,7 @@ namespace Application.UseCases.SComentario
                 PromedioPuntajeId = request.PromedioPuntajeId,
                 PuntajeReceta = request.PuntajeReceta,
                 RecetaId = request.RecetaId,
-                //UsuarioId = request.UsuarioId,
+                UsuarioId = request.UsuarioId,
 
             };
             Comentario comentarioCreated = await _command.CreateComentario(comentario);
@@ -108,7 +108,7 @@ namespace Application.UseCases.SComentario
             }
         }
 
-        public async Task<ComentarioResponse> UpdateComentario(ComentarioRequest request, int idComentario)
+        public async Task<UpdateComentarioResponse> UpdateComentario(UpdateComentarioRequest request, int idComentario)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace Application.UseCases.SComentario
                 {
                     comentario = await _command.UpdateComentario(request, idComentario);
 
-                    return await CreateComentarioResponse(comentario);
+                    return await CreateUpdateComentarioResponse(comentario);
                 }
                 else
                 {
@@ -150,6 +150,19 @@ namespace Application.UseCases.SComentario
                 PuntajeReceta = uncomentario.PuntajeReceta,
                 UsuarioId = uncomentario.UsuarioId,
                 RecetaId = uncomentario.RecetaId,
+            };
+            return Task.FromResult(comentario);
+        }
+
+        private Task<UpdateComentarioResponse> CreateUpdateComentarioResponse(Comentario uncomentario)
+        {
+            var comentario = new UpdateComentarioResponse
+            {
+
+                Contenido = uncomentario.Contenido,
+                PromedioPuntajeId = uncomentario.PromedioPuntajeId,
+                PuntajeReceta = uncomentario.PuntajeReceta,
+               
             };
             return Task.FromResult(comentario);
         }

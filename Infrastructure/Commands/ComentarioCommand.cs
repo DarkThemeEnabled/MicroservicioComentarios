@@ -43,14 +43,12 @@ namespace Infrastructure.Commands
             }
         }
 
-        public async Task<Comentario> UpdateComentario(ComentarioRequest comentarioRequest, int comentarioId)
+        public async Task<Comentario> UpdateComentario(UpdateComentarioRequest comentarioRequest, int comentarioId)
         {
             try
             {
                 var comentarioToUpdate = await _context.Comentarios.FirstOrDefaultAsync(co => co.ComentarioId == comentarioId);
-                comentarioToUpdate.UsuarioId = comentarioRequest.UsuarioId;
                 comentarioToUpdate.PromedioPuntajeId = comentarioRequest.PromedioPuntajeId;
-                comentarioToUpdate.RecetaId = comentarioRequest.RecetaId;
                 comentarioToUpdate.Contenido = comentarioRequest.Contenido;
                 comentarioToUpdate.PuntajeReceta = comentarioRequest.PuntajeReceta;
                 comentarioToUpdate.Modificado = true;

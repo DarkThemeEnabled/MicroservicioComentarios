@@ -49,8 +49,8 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("RecetaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ComentarioId");
 
