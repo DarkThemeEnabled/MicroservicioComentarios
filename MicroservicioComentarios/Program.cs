@@ -4,6 +4,9 @@ using Infrastructure.Commands;
 using Infrastructure.Persistence;
 using Infrastructure.Querys;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,7 @@ builder.Services.AddScoped<IComentarioQuery, ComentarioQuery>();
 builder.Services.AddScoped<IComentarioService, ComentarioService>();
 
 
+//CORS deshabilitar
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
@@ -32,6 +36,21 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
+});
+
+//agregado servicio de token
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtBearerOptions =>
+{
+    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+    {
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Secret"])
+        ),
+        ValidIssuer = "localhost",
+        ValidAudience = "usuarios",
+        ValidateLifetime = true
+    };
 });
 
 var app = builder.Build();
