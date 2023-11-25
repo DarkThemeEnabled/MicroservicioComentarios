@@ -17,6 +17,7 @@ namespace MicroservicioComentarios.Controllers
             _comentarioService = comentarioService;
         }
 
+        //Descomentar luego [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(BadRequest), 400)]
         [ProducesResponseType(typeof(BadRequest), 409)]
@@ -48,6 +49,8 @@ namespace MicroservicioComentarios.Controllers
             }
         }
 
+
+        //Descomentar luego [Authorize]
         [HttpPut("{Id}")]
         [ProducesResponseType(typeof(ComentarioResponse), 200)]
         [ProducesResponseType(typeof(BadRequest), 400)]
@@ -74,6 +77,8 @@ namespace MicroservicioComentarios.Controllers
             }
         }
 
+        //Descomentar luego [Authorize]
+        // ver que no suceda lo que en usuario, que se expone el id
         [HttpDelete("{Id}")]
         [ProducesResponseType(typeof(ComentarioResponse), 200)]
         [ProducesResponseType(typeof(BadRequest), 400)]
@@ -100,6 +105,7 @@ namespace MicroservicioComentarios.Controllers
             }
         }
 
+        // ver que no suceda lo que en usuario, que se expone el id
         [HttpGet("{Id}")]
         [ProducesResponseType(typeof(ComentarioResponse), 200)]
         [ProducesResponseType(typeof(BadRequest), 400)]
@@ -121,6 +127,7 @@ namespace MicroservicioComentarios.Controllers
             }
         }
 
+        // ver que no suceda lo que en usuario, que se expone el id
         [HttpGet("RecetaId/{Id}")]
         [ProducesResponseType(typeof(ComentarioResponse), 200)]
         [ProducesResponseType(typeof(BadRequest), 400)]
